@@ -1,17 +1,10 @@
+version: "3.9"
+
 networks:
   expense: {}
-  # docker volume create mysql
+
 volumes:
   mysql:
-services:
-  backend:
-    image: shivakrishna44/backend:1.0.0
-    command: sh -c "sleep 10 && node /opt/backend/index.js"
-    networks:
-    - expense
-    container_name: backend
-    depends_on:
-    - mysql
 
 services:
   mysql:
@@ -28,16 +21,23 @@ services:
       retries: 10
       start_period: 5s
 
-  # docker run -d --name mysql --network expense -v mysql:/var/lib/mysql mysql:1.0.0
+  backend:
+    image: shivakrishna44/backend:1.0.0
+    container_name: backend
+    networks:
+      - expense
+    depends_on:
+      mysql:
+        condition: service_healthy
+    # REMOVE sleep — not needed after adding healthcheck
+    command: ["node", "/opt/backend/index.js"]
 
   frontend:
     image: shivakrishna44/frontend:1.0.0
-    networks:
-    - expense
     container_name: frontend
+    networks:
+      - expense
     ports:
-    - 80:80
+      - "80:80"
     depends_on:
-    - backend
-  
-  
+      - backend
