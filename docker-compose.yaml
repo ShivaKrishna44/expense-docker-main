@@ -33,7 +33,7 @@ services:
     command: ["node", "/opt/backend/index.js"]
 
   frontend:
-    image: shivakrishna44/frontend:1.0.1
+    image: shivakrishna44/frontend:1.0.2
     container_name: frontend
     networks:
       - expense
