@@ -32,6 +32,6 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Copy built frontend files
 COPY code /usr/share/nginx/html/
 # Use non-root user for security
-USER nginx
+#USER nginx
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
